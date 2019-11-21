@@ -2,17 +2,18 @@ function  [x, t, k] = RungeKuttaLinear (M, x0, I, tau, b, A)
   s = length(b);
   d = length(x0);
   n = (I(2) - I(1))/tau;
-  c = sum(A, 2);
-  t = I(1) + tau * c;
-  t = t'
   
-  x = zeros(d, n)
-  t = 
-  for i = 1:n
-    
-  soln = fsolve(system(M, x0, tau, b, A), zeros(6,1));
-  x = soln(1:2);
-  k = soln(3:6);
+  x = zeros(d, n);
+  t = [I(1), zeros(1, n - 1)];
+  k = zeros(n, d, s);
+  
+  for i = 2:n
+    t(i) = I(1) + tau * i;
+    soln = fsolve(system(M, x0, tau, b, A), [x0; ones(4,1)]);
+    x(:, i) = soln(1:2);
+    k(i, :, 1) = soln(3:4);
+    k(i, :, 2) = soln(5:6);
+  end
 endfunction
 
 function f = system (M, xn, tau, b, A)
