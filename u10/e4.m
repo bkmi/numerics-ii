@@ -5,7 +5,6 @@ g = @(x) (exp(x/0.026) - 1) * 10^-6;
 alpha = 0.99;
 Vdd = 1;
 Vin = @(t) 2 * sin(2 * pi * t) + 0.2 * sin(20 * pi * t);
-
 E = [cj, 0, -cj, 0, 0; 
       0, c0, 0, -c0, 0;
       -cj, 0, 2*cj, -cj, 0;
@@ -26,4 +25,8 @@ b2 = @(t) -1 .* [G(1) * Vin(t);
                  0;
                  0;
                  G(5) * Vdd];
-b = @(u, t) b1(u) + b2(t);
+b = @(t, u) b1(u) + b2(t);
+
+rhs = @(t, u) A * u + b(t, u);
+options = odeset('Mass', E);
+[t,u] = ode23t(rhs,[0,2],y0)
