@@ -27,7 +27,7 @@ e_simple = zeros(size(taus));
 x0 = [0;0;0];
 A = [[1]];
 b = [1];
-tol = tau^2;
+tol = taus(1)^2;
 
 for ind = 1:length(taus)
   tau = taus(ind)
