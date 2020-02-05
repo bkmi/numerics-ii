@@ -29,4 +29,5 @@ function [u, uk] = pcg_ben(A, b, u0, tol, uexact, pre)
       uk(:, k + 1) = u;
       k += 1;
     endwhile
+    uk = uk(:, 1:k);
 endfunction

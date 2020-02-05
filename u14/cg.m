@@ -25,4 +25,5 @@ function [u, uk] = cg(A, b, u0, tol, uexact)
       uk(:, k + 1) = u;
       k += 1;
     endwhile
+    uk = uk(:, 1:k);
 endfunction
