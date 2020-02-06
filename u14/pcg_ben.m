@@ -28,9 +28,6 @@ function [u, uk] = pcg_ben(A, b, u0, tol, uexact, pre)
       
       uk(:, k + 1) = u;
       k += 1;
-      if k > 25
-        break
-      endif
     endwhile
     uk = uk(:, 1:k);
 endfunction

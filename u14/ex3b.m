@@ -54,7 +54,6 @@ for n = 3:15;
   Binv = inv(sgs(A));
   pre = @(x) Binv * x;
   [u, uk] = pcg_ben(A, b, u0, tol, uexact, pre);
-  % [u, uk] = cg(A, b, u0, tol, uexact);
   
   steps = size(uk, 2);
   errors = zeros(steps, 1);
@@ -70,5 +69,65 @@ endfor
 
 legend(labels)
 title('Error vs Step for Preconditioned Conjugate Gradient Method')
+xlabel('steps');
+ylabel('error');
+
+% Jacobi
+figure;
+hold on;
+labels = cell;
+for n = 3:15;
+  A = A_fn(n);
+  grid = linspace(0, 1, n);
+  uexact = U_fn(n, grid);
+  b = A*uexact;
+  u0 = zeros(n^2, 1);
+  
+  [u, uk] = Jacobi(A, b, u0, tol, uexact);
+  
+  steps = size(uk, 2);
+  errors = zeros(steps, 1);
+  for i = 1:steps
+    errors(i) = error(A, uk(:, i), uexact);
+  endfor
+  
+  rho = average_convergence_rate(A, uk, uexact);
+  
+  semilogx(0:steps-1, errors);
+  labels{end+1,1} = strcat('n=', num2str(n), ', rate = ', num2str(rho));
+endfor
+
+legend(labels)
+title('Error vs Step for Jacobi Method')
+xlabel('steps');
+ylabel('error');
+
+% Gauss-seidel
+figure;
+hold on;
+labels = cell;
+for n = 3:15;
+  A = A_fn(n);
+  grid = linspace(0, 1, n);
+  uexact = U_fn(n, grid);
+  b = A*uexact;
+  u0 = zeros(n^2, 1);
+  
+  [u, uk] = GaussSeidel(A, b, u0, tol, uexact);
+  
+  steps = size(uk, 2);
+  errors = zeros(steps, 1);
+  for i = 1:steps
+    errors(i) = error(A, uk(:, i), uexact);
+  endfor
+  
+  rho = average_convergence_rate(A, uk, uexact);
+  
+  semilogx(0:steps-1, errors);
+  labels{end+1,1} = strcat('n=', num2str(n), ', rate = ', num2str(rho));
+endfor
+
+legend(labels)
+title('Error vs Step for Gauss-seidel Method')
 xlabel('steps');
 ylabel('error');
