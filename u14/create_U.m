@@ -1,4 +1,4 @@
-function b = create_rhs (k, f, grid)
+function b = create_U (k, f, grid)
   assert(length(grid) == k)
   b = zeros(k^2, 1);
   for i = 1:k

@@ -23,11 +23,14 @@ function [u, uk] = pcg_ben(A, b, u0, tol, uexact, pre)
       
       r_norm_new = z' * r;
       beta = r_norm_new / r_norm_old;
-      e = r + beta * e;
+      e = z + beta * e;
       r_norm_old = r_norm_new;
       
       uk(:, k + 1) = u;
       k += 1;
+      if k > 25
+        break
+      endif
     endwhile
     uk = uk(:, 1:k);
 endfunction
